@@ -91,14 +91,17 @@
         {% endwith %}
         <div class="form-group">
             <label for="ssid">SSID:</label>
-            <input type="text" name="ssid" id="ssid" class="form-control" required>
+            <input type="text" name="ssid" id="ssid" class="form-control">
         </div>
         <div class="form-group">
             <label for="password">Password:</label>
-            <input type="password" name="password" id="password" class="form-control" required>
+            <input type="password" name="password" id="password" class="form-control">
         </div>
         <div class="form-group">
-            <input type="submit" value="Update Wi-Fi Configuration" class="btn btn-primary">
+            <input type="submit" name="submit" value="Update Wi-Fi Configuration" class="btn btn-primary">
+        </div>
+        <div class="form-group">
+            <input type="submit" name="submit" value="Remove Wi-Fi Configuration" style="background-color: red; margin-top: 50px;">
         </div>
     </form>
 </body>

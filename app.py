@@ -10,12 +10,14 @@ app.secret_key = os.urandom(24)
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
+        print("request.form: ", request.form)
         ssid = request.form["ssid"]
         password = request.form["password"]
-
-        if len(ssid) > 0 and len(password) >= 8:
+        action = request.form["submit"]   
+        print("action: ", action)  
+        if (len(ssid) > 0 and len(password) > 0 and action == "Update Wi-Fi Configuration") or action == "Remove Wi-Fi Configuration":
             try:
-                update_netplan_config(ssid, password)
+                update_netplan_config(ssid, password, action)
                 flash("Wi-Fi configuration updated successfully.", "success")
             except Exception as e:
                 flash(
@@ -34,10 +36,15 @@ def get_wifi_interface():
     return os.path.basename(os.path.dirname(interfaces[0]))
 
 
-def update_netplan_config(ssid, password):
+def update_netplan_config(ssid, password, action):
     wifi_interface = get_wifi_interface()
-
-    config = f"""
+    if action == "Remove Wi-Fi Configuration" or len(ssid) == 0 or len(password) == 0:
+        config = f"""network:
+  version: 2
+  renderer: networkd
+""" 
+    else: 
+        config = f"""
 network:
   version: 2
   renderer: networkd
